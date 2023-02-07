@@ -2,11 +2,12 @@ package part2.ex3.데이터구조화;
 
 import java.util.Scanner;
 
-public class Program {
+public class ListProgram {
     public static void main(String[] args) {
 
-        Exam[] exams = new Exam[3];
-        int current = 0;
+        ExamList list = new ExamList();
+        list.exams = new Exam[3];
+        list.current = 0;
 
         int menu;
         boolean keepLoop = true;
@@ -17,10 +18,10 @@ public class Program {
             switch(menu)
             {
                 case 1:
-                    inputList(exams, current);
+                    inputList(list);
                     break;
                 case 2:
-                    printList(exams, current);
+                    printList(list);
                     break;
                 case 3:
                     System.out.println("Bye~~");
@@ -35,11 +36,14 @@ public class Program {
 
     }
 
-    private static void printList(Exam[] exams, int size) {
+    private static void printList(ExamList list) {
         System.out.println("┌──────────────────┐");
         System.out.println("│     성적 출력      │");
         System.out.println("└──────────────────┘");
         System.out.println();
+
+        int size = list.current;
+        Exam[] exams = list.exams;
 
         for (int i = 0; i < size; i++) {
             Exam exam = exams[i];
@@ -61,7 +65,7 @@ public class Program {
 
     }
 
-    private static void inputList(Exam[] exams, int current) {
+    private static void inputList(ExamList list) {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("┌──────────────────┐");
@@ -103,8 +107,20 @@ public class Program {
         exam.eng = eng;
         exam.math = math;
 
-        exams[current] = exam;
-        current++;
+        Exam[] exams = list.exams;
+        int size = list.current;
+
+        if(list.exams.length == list.current) {
+            Exam[] temp = new Exam[size + 5]; // 크기가 5개 정도 더 큰 새로운 배열을 생성
+
+            for (int i = 0; i < size; i++) { // 값을 이주시키기
+                temp[i] = exams[i];
+            }
+            list.exams = temp; // list.exams가 새로만든 temp 배열을 참조하도록 한다
+        }
+
+        list.exams[list.current] = exam;
+        list.current++;
 
 
     }
